@@ -8,8 +8,8 @@ public class CharacterMovement : MonoBehaviour
     public float moveSpeed;
     public float jumpForce;
     
-    public bool isJumping;
-    public bool isGrounded;
+    private bool _isJumping;
+    private bool _isGrounded;
     
     public Transform groundCheckLeft;
     public Transform groundCheckRight;
@@ -21,9 +21,9 @@ public class CharacterMovement : MonoBehaviour
 
     private void Update()
     {
-        isGrounded = Physics2D.OverlapArea(groundCheckLeft.position, groundCheckRight.position);
-        if (Input.GetButtonDown("Jump") && isGrounded)
-            isJumping = true;
+        _isGrounded = Physics2D.OverlapArea(groundCheckLeft.position, groundCheckRight.position);
+        if (Input.GetButtonDown("Jump") && _isGrounded)
+            _isJumping = true;
     }
     
     private void FixedUpdate()
@@ -40,9 +40,9 @@ public class CharacterMovement : MonoBehaviour
         Vector3 targetVelocity = new Vector2(movement, velocity.y);
         rb.velocity = Vector3.SmoothDamp(velocity, targetVelocity, ref _velocity, .05f);
     
-        if (!isJumping) return;
+        if (!_isJumping) return;
         
         rb.AddForce(new Vector2(0f, jumpForce));
-        isJumping = false;
+        _isJumping = false;
     }
 }
